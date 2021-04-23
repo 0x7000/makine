@@ -1,6 +1,8 @@
-def main():
-    pass
+import wikipedia
+
+def test():
+    print(wikipedia.search("Bill"))
 
 
 if __name__ == "__main__":
-    main()
+    test()
