@@ -5,26 +5,63 @@ import urllib.parse
 # misal çerçeve = %C3%A7er%C3%A7eve
 from bs4 import BeautifulSoup
 import re
+from collections import Counter
 
 
 def ara():
-    aranan = "redd"
+    kelimeler = []
+    aranan = input("Aranan : ")
+    GOZARDI = [aranan, "(bkz:", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", ":",
+               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*"]
+    e, u = eksi(aranan), uludag(aranan)
+    for emsg in e:
+        k1 = emsg.split(" ")
+        for k in k1:
+            if k not in GOZARDI:
+                kelimeler.append(k)
+    for umsg in u:
+        k2 = umsg.split(" ")
+        for k in k2:
+            if k not in GOZARDI:
+                kelimeler.append(k)
+    kelimeler.sort()
+    # print(kelimeler)
+    encok = Counter(kelimeler)
+    print(encok.most_common(4))
+
+
+def uludag(aranan):
     Sozluk = "https://www.uludagsozluk.com/k/{}".format(urllib.parse.quote(aranan))
-    print(Sozluk)
     istek = requests.get(Sozluk, headers=AGENT)
     if istek.status_code == 200:
-        mesajlar = entry(istek.text)
+        mesajlar = entry(istek.text, "entry-p")
         if isinstance(mesajlar, list):
-            for msg in mesajlar:
-                print(msg)
+            return mesajlar
+        else:
+            return None
     else:
-        print("Erişim yok {}".format(istek.status_code))
+        print("Uludağ Erişim yok {}".format(istek.status_code))
+        return None
 
 
-def entry(html_code):
+def eksi(aranan):
+    Sozluk = "https://eksisozluk.com/?q={}".format(urllib.parse.quote(aranan))
+    istek = requests.get(Sozluk, headers=AGENT)
+    if istek.status_code == 200:
+        mesajlar = entry(istek.text, "content")
+        if isinstance(mesajlar, list):
+            return mesajlar
+        else:
+            return None
+    else:
+        print("Ekşi Erişim yok {}".format(istek.status_code))
+        return None
+
+
+def entry(html_code, entry_code):
     liste = []
     sayfa = BeautifulSoup(html_code, features="html5lib")
-    mesajlar = sayfa.find_all("div", attrs={"class", "entry-p"})
+    mesajlar = sayfa.find_all("div", attrs={"class", entry_code})
     for msg in mesajlar:
         mesaj = str(msg.text).strip().replace("\n", " ")
         mesaj = re.sub(r"\s+", " ", mesaj)
