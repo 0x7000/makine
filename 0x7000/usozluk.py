@@ -28,7 +28,7 @@ def entry(html_code):
     for msg in mesajlar:
         mesaj = str(msg.text).strip().replace("\n", " ")
         mesaj = re.sub(r"\s+", " ", mesaj)
-        # birden fazla boğluğu tek boşluşa çevirmek için
+        # birden fazla boğluğu tek boşluşa çevirmek için.
         liste.append(mesaj)
     return liste
 
