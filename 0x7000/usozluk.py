@@ -11,8 +11,10 @@ from collections import Counter
 def ara():
     kelimeler = []
     aranan = input("Aranan : ")
-    GOZARDI = [aranan, "(bkz:", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", ":",
-               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*"]
+    GOZARDI = [aranan, "(bkz:", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", ":", "gelen", "ya",
+               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*", ",", ".", "ne", "daha", "ama", "göre", "ye",
+               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "gibi", "gerek", "ah", "var", "bile", "--spoiler--",
+               "biraz", "çok", "gr." "mgr.", "ayrı"]
     e, u = eksi(aranan), uludag(aranan)
     for emsg in e:
         k1 = emsg.split(" ")
@@ -27,7 +29,11 @@ def ara():
     kelimeler.sort()
     # print(kelimeler)
     encok = Counter(kelimeler)
-    print(encok.most_common(4))
+    sonuclar = encok.most_common(5)
+    temiz_sonuclar = []
+    for x in sonuclar:
+        temiz_sonuclar.append(x[0])
+    print(temiz_sonuclar)
 
 
 def uludag(aranan):
