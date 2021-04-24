@@ -11,23 +11,41 @@ from collections import Counter
 def ara():
     kelimeler = []
     aranan = input("Aranan : ")
-    GOZARDI = [aranan, "(bkz:", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", ":",
-               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*"]
+    GOZARDI = [aranan, "bkz", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", "gelen", "ya",
+               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*", ",", ".", "ne", "daha", "ama", "göre", "ye",
+               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "10", "gibi", "gerek", "ah", "var", "bile", "spoiler",
+               "biraz", "çok", "gr." "mgr.", "ayrı", "a", "90", "veya", "den", "nin", "ancak", "ki"]
     e, u = eksi(aranan), uludag(aranan)
     for emsg in e:
         k1 = emsg.split(" ")
         for k in k1:
+            k = temizle(k)
             if k not in GOZARDI:
-                kelimeler.append(k)
+                if len(k) > 0:
+                    kelimeler.append(k)
     for umsg in u:
         k2 = umsg.split(" ")
         for k in k2:
+            k = temizle(k)
             if k not in GOZARDI:
-                kelimeler.append(k)
+                if len(k) > 0:
+                    kelimeler.append(k)
     kelimeler.sort()
     # print(kelimeler)
     encok = Counter(kelimeler)
-    print(encok.most_common(4))
+    sonuclar = encok.most_common(5)
+    temiz_sonuclar = []
+    for x in sonuclar:
+        temiz_sonuclar.append(x[0])
+    print(temiz_sonuclar)
+
+
+def temizle(kelime):
+    liste = [",", ".", "!", "(", ")", ":", "-"]
+    for x in liste:
+        kelime = str(kelime).replace(x, " ")
+        kelime = re.sub(r"\s+", " ", kelime)
+    return kelime.lower().strip()
 
 
 def uludag(aranan):
