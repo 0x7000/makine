@@ -17,7 +17,7 @@ def ara():
                "biraz", "çok", "gr." "mgr.", "ayrı", "a", "90", "veya", "den", "nin", "ancak", "ki", "ben", "isterim",
                "aslında", "döneminde", "fakat", "anlamı", "anlamına", "hayli", "büyükken", "sağlar", "sonra", "az",
                "tarafından", "bana", "şey", "dur", "etrafı", "cok", "başka", "hem", "hep", "bazı", "benzeri", "olmayan",
-               "yeri", "aynı", "ise"]
+               "yeri", "aynı", "ise", "gene"]
     e, u = eksi(aranan), uludag(aranan)
     for emsg in e:
         k1 = emsg.split(" ")
@@ -44,7 +44,7 @@ def ara():
 
 
 def temizle(kelime):
-    liste = [",", ".", "!", "(", ")", ":", "-"]
+    liste = [",", ".", "!", "(", ")", ":", "-", "[", "<"]
     for x in liste:
         kelime = str(kelime).replace(x, " ")
         kelime = re.sub(r"\s+", " ", kelime)
