@@ -14,7 +14,8 @@ def main():
         if oran >= 80:
             duzeltilmis.append(i)
             if i[0] == kelime[0]:
-                oneri.append(i)
+                if len(i) == len(kelime):
+                    oneri.append(i)
     print("Benzerleri: {}".format(duzeltilmis))
     print("En yakın: {}".format(oneri))
 
