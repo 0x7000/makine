@@ -22,6 +22,7 @@ def search_wikipedia(word):
             wiki_result.write("\n")
         except Exception as e:
             # hatanın ne olduğunu görmek için ekledim kips kips
+            # pep standartına göre bare metal exception kullanılmaz.
             print(word, ": not found {}".format(e))
 
 
