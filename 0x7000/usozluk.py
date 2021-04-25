@@ -11,10 +11,13 @@ from collections import Counter
 def ara():
     kelimeler = []
     aranan = input("Aranan : ")
-    GOZARDI = [aranan, "bkz", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", "gelen", "ya",
+    GOZARDI = [aranan, "bkz", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", "gelen", "ya", "yana",
                "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*", ",", ".", "ne", "daha", "ama", "göre", "ye",
                "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "10", "gibi", "gerek", "ah", "var", "bile", "spoiler",
-               "biraz", "çok", "gr." "mgr.", "ayrı", "a", "90", "veya", "den", "nin", "ancak", "ki"]
+               "biraz", "çok", "gr." "mgr.", "ayrı", "a", "90", "veya", "den", "nin", "ancak", "ki", "ben", "isterim",
+               "aslında", "döneminde", "fakat", "anlamı", "anlamına", "hayli", "büyükken", "sağlar", "sonra", "az",
+               "tarafından", "bana", "şey", "dur", "etrafı", "cok", "başka", "hem", "hep", "bazı", "benzeri", "olmayan",
+               "yeri", "aynı", "ise"]
     e, u = eksi(aranan), uludag(aranan)
     for emsg in e:
         k1 = emsg.split(" ")

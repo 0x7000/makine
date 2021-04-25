@@ -20,8 +20,9 @@ def search_wikipedia(word):
             wiki_result.write(":")
             wiki_result.write(page.summary)
             wiki_result.write("\n")
-        except:
-            print(word, ": not found")
+        except Exception as e:
+            # hatanın ne olduğunu görmek için ekledim kips kips
+            print(word, ": not found {}".format(e))
 
 
 if __name__ == "__main__":
