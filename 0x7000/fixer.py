@@ -22,7 +22,7 @@ def main():
 
 def alldatabase():
     dizi = []
-    db = sql.connect("kelimeler.db")
+    db = sql.connect("data/kelimeler.db")
     db.text_factory = str
     im = db.cursor()
     im.execute("SELECT * FROM sozluk")
