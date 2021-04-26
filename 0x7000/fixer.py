@@ -4,20 +4,23 @@ import sqlite3 as sql
 
 
 def main():
-    kelime = input(": ")
     sozluk = alldatabase()
-    benzer = []
-    enyakin = []
-    for i in sozluk:
-        i = i.lower().strip("\n")
-        oran = difflib.SequenceMatcher(None, i, kelime).ratio() * 100
-        if oran >= 75:
-            benzer.append(i)
-            if i[0] == kelime[0]:
-                if len(i) == len(kelime):
-                    enyakin.append(i)
-    print("Benzerleri: {}".format(benzer))
-    print("En yakın: {}".format(enyakin))
+    while 1:
+        kelime = input(": ")
+        benzer = []
+        enyakin = []
+        for i in sozluk:
+            i = i.lower().strip("\n")
+            oran = difflib.SequenceMatcher(None, i, kelime).ratio() * 100
+            if oran >= 75:
+                benzer.append(i)
+                if i[0] == kelime[0]:
+                    if len(i) == len(kelime):
+                        enyakin.append(i)
+        print("Benzerleri: {}".format(benzer))
+        print("En yakın: {}".format(enyakin))
+        enyakin.clear()
+        benzer.clear()
 
 
 def alldatabase():
