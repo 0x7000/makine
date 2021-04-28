@@ -10,22 +10,12 @@ def main():
         if kelime == "!q":
             break
         benzer = []
-        enyakin = []
         for i in sozluk:
             i = i.lower().strip("\n")
             oran = difflib.SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
-                # benzerlik oruna 4 harflik kelimelerde %75 den aşağısını bulmıyor
-                # örneğin "babo" kelimesi %80 oranda "baba" olarak çıkmıyor
                 benzer.append(i)
-                if i[0] == kelime[0]:
-                    # ilk harf yanlış yazılmaz prensibi ile aynı harfleri kullanan kelimeleri
-                    # ayırt edip en azından daha temiz sonuç vermesi için.
-                    if len(i) == len(kelime):
-                        enyakin.append(i)
         print("Benzerleri: {}".format(benzer))
-        print("En yakın: {}".format(enyakin))
-        enyakin.clear()
         benzer.clear()
 
 
