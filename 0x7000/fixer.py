@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-from difflib import SequenceMatcher
+from difflib import SequenceMatcher, get_close_matches
 import sqlite3 as sql
 
 
 def main():
     sozluk = veritabani()
-    enyakin = []
+    benzer = []
     while 1:
         kelime = input(": ")
         if kelime == "!q":
@@ -14,8 +14,11 @@ def main():
             i = i.lower().strip("\n")
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
-                enyakin.append(i)
+                benzer.append(i)
+        enyakin = get_close_matches(kelime, benzer, 2)
+        print("Benzer \t: {}".format(benzer))
         print("Yakın \t: {}".format(enyakin))
+        benzer.clear()
         enyakin.clear()
 
 
