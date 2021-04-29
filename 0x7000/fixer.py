@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-import difflib
+from difflib import SequenceMatcher
 import sqlite3 as sql
 
 
 def main():
     sozluk = veritabani()
+    enyakin = []
     while 1:
         kelime = input(": ")
         if kelime == "!q":
             break
-        benzer = []
         for i in sozluk:
             i = i.lower().strip("\n")
-            oran = difflib.SequenceMatcher(None, i, kelime).ratio() * 100
+            oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
-                benzer.append(i)
-        print("Benzerleri: {}".format(benzer))
-        benzer.clear()
+                enyakin.append(i)
+        print("Yakın \t: {}".format(enyakin))
+        enyakin.clear()
 
 
 def veritabani():
