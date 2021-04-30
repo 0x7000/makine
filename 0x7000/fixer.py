@@ -15,7 +15,8 @@ def main():
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
                 benzer.append(i)
-        enyakin = get_close_matches(kelime, benzer, 2)
+        enyakin = get_close_matches(kelime, benzer, 3)
+        enyakin.sort()
         print("Benzer \t: {}".format(benzer))
         print("Yakın \t: {}".format(enyakin))
         benzer.clear()
