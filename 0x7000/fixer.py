@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from difflib import SequenceMatcher, get_close_matches
+from difflib import SequenceMatcher
 import sqlite3 as sql
 
 
