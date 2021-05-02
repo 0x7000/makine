@@ -1,98 +1,128 @@
 #!/usr/bin/env python
 import requests
 import urllib.parse
-# urllib.parse adres çubuğuna yazılan tr karakterleri kullanmak için
-# misal çerçeve = %C3%A7er%C3%A7eve
 from bs4 import BeautifulSoup
 import re
+import html2text  # bs4 içindeki text ayrıştırıcı hatalı yeni satırlayı ayıklamıyor.
+import os
 from collections import Counter
+# çok fazla veri çekiyor kullanırken iki kez düşünün.
 
 
 def ara():
+    aranan = input(": ")
     kelimeler = []
-    aranan = input("Aranan : ")
-    GOZARDI = [aranan, "bkz", "bir", "en", "ve", "ile", "o", "an", "da", "de", "için", "bu", "gelen", "ya", "yana",
-               "kadar", "olarak", "her", "bi", "olan", '"-', ":)", "*", ",", ".", "ne", "daha", "ama", "göre", "ye",
-               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "10", "gibi", "gerek", "ah", "var", "bile", "spoiler",
-               "biraz", "çok", "gr." "mgr.", "ayrı", "a", "90", "veya", "den", "nin", "ancak", "ki", "ben", "isterim",
-               "aslında", "döneminde", "fakat", "anlamı", "anlamına", "hayli", "büyükken", "sağlar", "sonra", "az",
-               "tarafından", "bana", "şey", "dur", "etrafı", "cok", "başka", "hem", "hep", "bazı", "benzeri", "olmayan",
-               "yeri", "aynı", "ise", "gene", "diye", "memnun", "oldukça", "farklı", "tepesi", "iki", "fazlasıyla",
-               "2009", "doğduğu"]
-    e, u = eksi(aranan), uludag(aranan)
-    for emsg in e:
-        k1 = emsg.split(" ")
-        for k in k1:
-            k = temizle(k)
-            if k not in GOZARDI:
-                if len(k) > 0:
-                    kelimeler.append(k)
-    for umsg in u:
-        k2 = umsg.split(" ")
-        for k in k2:
-            k = temizle(k)
-            if k not in GOZARDI:
-                if len(k) > 0:
-                    kelimeler.append(k)
-    kelimeler.sort()
-    # print(kelimeler)
-    encok = Counter(kelimeler)
-    sonuclar = encok.most_common(5)
-    temiz_sonuclar = []
-    for x in sonuclar:
-        temiz_sonuclar.append(x[0])
-    print(temiz_sonuclar)
-
-
-def temizle(kelime):
-    liste = [",", ".", "!", "(", ")", ":", "-", "[", "<"]
-    for x in liste:
-        kelime = str(kelime).replace(x, " ")
-        kelime = re.sub(r"\s+", " ", kelime)
-    return kelime.lower().strip()
-
-
-def uludag(aranan):
-    Sozluk = "https://www.uludagsozluk.com/k/{}".format(urllib.parse.quote(aranan))
-    istek = requests.get(Sozluk, headers=AGENT)
-    if istek.status_code == 200:
-        mesajlar = entry(istek.text, "entry-p")
-        if isinstance(mesajlar, list):
-            return mesajlar
-        else:
-            return None
+    if os.path.exists(DATADIR + aranan):
+        oku = open(DATADIR + aranan, "r")
+        mesajlar = oku.readlines()
+        for k in mesajlar:
+            tmp = k.split(" ")
+            for x in tmp:
+                x = x.replace(".", "")
+                x = x.replace(",", "")
+                x = x.strip()
+                if gozardi(x, aranan):
+                    if len(x) >= 1:
+                        kelimeler.append(x)
+                else:
+                    pass
     else:
-        print("Uludağ Erişim yok {}".format(istek.status_code))
-        return None
+        mesaj = eksi(aranan)
+        dosya_kayit(aranan, mesaj)
+    kelimeler.sort()
+    sayac = Counter(kelimeler)
+    encok = sayac.most_common(25)
+    sonuclar = []
+    for en in encok:
+        sonuclar.append(en[0])
+    print(sonuclar)
+    encok.clear()
+    sonuclar.clear()
+    kelimeler.clear()
+
+
+def dosya_kayit(dosya_adi, icerik):
+    dosya = open(DATADIR + dosya_adi, "a")
+    for satir in icerik:
+        dosya.write(satir + "\n")
+    dosya.close()
+
+
+def gozardi(word, aranan):
+    liste = [aranan, "var", "icin", "felan", "falan", "bunun", "de", "da", "ve", "bir", "bu", "(bkz:", "en", "ama",
+             "çok", "ile", "-", "gibi", "o", "için", "ne", "daha", "her", "olarak", "kadar", "son", "ben", "ki",
+             "diye", "sonra", "olan", "veya", "şey", "sadece", "bile", "bunu", "bi", "ise", "şu", "değil", "hiç",
+             "yani", "yok", "zaten", "yeni", "the", "a", "ya", "şey", "kendi", "aynı", "nasıl", "ilk", "iyi", "tek",
+             "\\-", "beni", "hem", "2", "3", "göre", "1", "hep", "ancak", "vs", "benim", "biraz", "büyük", "bana",
+             "hatta", "fazla", "olduğu", "çünkü", "şekilde", "10", "hala", "mi", "tüm", "başka", "cok", "pek", "sorun",
+             "önce", "üzerinde", "böyle", "iki", "fakat", "mesela", "size", "yine", "and", "biri", "to", "zaman",
+             "artık", "burada", "neden", "dedim", "gün", "cilo", "tarafından", "orada", "olmayan", "an", "ele", "devam",
+             "buraya", "diğer", "olduğunu", "vardır", "herkes", "içinde", "biliyor", "muydunuz?", "evet", "hayır", "mı",
+             "öyle", "tam", "*", "şimdi"]
+    if word not in liste:
+        return True
+    else:
+        return False
 
 
 def eksi(aranan):
-    Sozluk = "https://eksisozluk.com/?q={}".format(urllib.parse.quote(aranan))
-    istek = requests.get(Sozluk, headers=AGENT)
+    adres = "https://eksisozluk.com/?q={}".format(urllib.parse.quote(aranan))
+    istek = requests.get(adres, headers=AGENT)
+    mesajlar = []
     if istek.status_code == 200:
-        mesajlar = entry(istek.text, "content")
-        if isinstance(mesajlar, list):
-            return mesajlar
-        else:
-            return None
+        sayfalar = int(sayfabul(istek.text))
+        for sayfa in range(1, sayfalar + 1):
+            adres2 = istek.url + "?p=" + str(sayfa)
+            print(adres2)
+            istek2 = requests.get(adres2, headers=AGENT)
+            sonuc = entry(istek2.text, "content")
+            if isinstance(sonuc, list):
+                for i in sonuc:
+                    mesajlar.append(i)
     else:
-        print("Ekşi Erişim yok {}".format(istek.status_code))
-        return None
+        sonuc = oneri(istek.text, "suggested-title")
+        mesajlar.append(sonuc)
+    return mesajlar
+
+
+def sayfabul(html):
+    sayfa = BeautifulSoup(html, "html.parser")
+    page = sayfa.find_all("div", attrs={"class": "pager"})
+    if len(page) >= 1:
+        sonsayfa = str(page[0]).strip()
+        regex = r"\"\d+\""
+        reg = re.findall(regex, sonsayfa)
+        if len(reg) > 1:
+            son = str(reg[1]).replace('"', "")
+        else:
+            son = "1"
+        return son
+    else:
+        return "1"
+
+
+def oneri(html_code, entry_code):
+    sayfa = BeautifulSoup(html_code, "html.parser")
+    mesajlar = sayfa.find("a", attrs={"class", entry_code})
+    mesaj = str(mesajlar.text).strip().replace("\n", " ")
+    return mesaj
 
 
 def entry(html_code, entry_code):
+    h = html2text.HTML2Text()
+    h.ignore_links = True
     liste = []
-    sayfa = BeautifulSoup(html_code, features="html5lib")
+    sayfa = BeautifulSoup(html_code, "html.parser")
     mesajlar = sayfa.find_all("div", attrs={"class", entry_code})
     for msg in mesajlar:
-        mesaj = str(msg.text).strip().replace("\n", " ")
+        mesaj = h.handle(str(msg)).strip().replace("\n", " ")
         mesaj = re.sub(r"\s+", " ", mesaj)
-        # birden fazla boşluğu tek boşluşa çevirmek için.
         liste.append(mesaj)
     return liste
 
 
 AGENT = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/88.0"}
+DATADIR = "data/"
 
 
 if __name__ == '__main__':
