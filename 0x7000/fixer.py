@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from difflib import SequenceMatcher
+from difflib import SequenceMatcher, get_close_matches
 import sqlite3 as sql
 
 
@@ -14,9 +14,16 @@ def main():
             i = i.lower().strip("\n")
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
-                benzer.append(i)
+                if i[0] == kelime[0]:
+                    # ilk harfler genelde doğru yazılır bu durumda ilk harfi farklı olanları elemeliyiz
+                    benzer.append(i)
+                else:
+                    pass
+        enyakin = get_close_matches(kelime, benzer, 3)
         print("Benzer \t: {}".format(benzer))
+        print("Yakın  \t: {}".format(enyakin))
         benzer.clear()
+        enyakin.clear()
 
 
 def veritabani():
