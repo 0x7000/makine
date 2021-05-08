@@ -14,14 +14,12 @@ def main():
             i = i.lower().strip("\n")
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
-                if i[0] == kelime[0]:
-                    # ilk harfler genelde doğru yazılır bu durumda ilk harfi farklı olanları elemeliyiz
-                    benzer.append(i)
-                else:
-                    pass
+                benzer.append(i)
+            else:
+                pass
         enyakin = get_close_matches(kelime, benzer, 3)
         print("Benzer \t: {}".format(benzer))
-        print("Yakın  \t: {}".format(enyakin))
+        print("Yakın \t: {}".format(enyakin))
         benzer.clear()
         enyakin.clear()
 
