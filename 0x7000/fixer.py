@@ -11,7 +11,6 @@ def main():
         if kelime == "!q":
             break
         for i in sozluk:
-            i = i.lower().strip("\n")
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
             if oran >= 75:
                 benzer.append(i)
