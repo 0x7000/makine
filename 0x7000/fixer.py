@@ -27,9 +27,8 @@ def main():
 def veritabani():
     dizi = []
     db = sql.connect("data/kelimeler.db")
-    db.text_factory = str
     im = db.cursor()
-    im.execute("SELECT * FROM sozluk")
+    im.execute("SELECT * FROM sozluk wh")
     veriler = im.fetchall()
     db.close()
     if veriler:
