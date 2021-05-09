@@ -12,11 +12,12 @@ def main():
             break
         for i in sozluk:
             oran = SequenceMatcher(None, i, kelime).ratio() * 100
-            if oran >= 75:
+            # quick_ratio() daha hızlı çalışıyor fakat alakasız kelimeleride listeye ekliyor
+            if oran >= 70:
                 benzer.append(i)
             else:
                 pass
-        enyakin = get_close_matches(kelime, benzer, 3)
+        enyakin = get_close_matches(kelime, benzer, 3, cutoff=0.7)
         print("Benzer \t: {}".format(benzer))
         print("Yakın \t: {}".format(enyakin))
         benzer.clear()
