@@ -38,9 +38,9 @@ def veritabani():
 
 
 def renk(kod):
-    renkler = {"BLACK": '\33[90m', "RED": '\33[91m', "GREEN": '\33[92m',
-               "YELLOW": '\33[93m', "BLUE": '\33[94m', "VIOLET": '\33[95m',
-               "BEIGE": '\33[96m', "WHITE": '\33[97m', "RESET": '\033[0m'}
+    renkler = {"BLACK": '\33[90m', "BLUE": '\33[94m', "RED": '\33[91m',
+               "GREEN": '\33[92m', "RESET": '\033[0m', "YELLOW": '\33[93m',
+               "BEIGE": '\33[96m', "WHITE": '\33[97m', "VIOLET": '\33[95m'}
     return renkler[kod]
 
 
