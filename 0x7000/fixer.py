@@ -18,8 +18,8 @@ def main():
             else:
                 pass
         enyakin = get_close_matches(kelime, benzer, 5, cutoff=0.7)
-        print("{}Benzer \t: {} {} ".format(renk("YELLOW"), renk("RESET"), benzer))
-        print("{}Yakın \t: {} {}".format(renk("GREEN"), renk("RESET"), enyakin))
+        print("Benzer \t: {} ".format(benzer))
+        print("Yakın \t: {}".format(enyakin))
         benzer.clear()
         enyakin.clear()
 
@@ -35,13 +35,6 @@ def veritabani():
         for i in veriler:
             dizi.append(i[0])
     return dizi
-
-
-def renk(kod):
-    renkler = {"BLACK": '\33[90m', "BLUE": '\33[94m', "RED": '\33[91m',
-               "GREEN": '\33[92m', "RESET": '\033[0m', "YELLOW": '\33[93m',
-               "BEIGE": '\33[96m', "WHITE": '\33[97m', "VIOLET": '\33[95m'}
-    return renkler[kod]
 
 
 if __name__ == '__main__':
